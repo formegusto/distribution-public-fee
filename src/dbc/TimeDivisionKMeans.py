@@ -32,6 +32,7 @@ class TimeDivisionKMeans:
         print("setting start")
         self.households_size = len(self.df.columns)
         self.total_size = len(self.df)
+        print(self.total_size)
         self.division_size = round(self.total_size / self.size)
         self.division_df = [self.df[_:_ + self.size]
                             for _ in range(0, self.total_size, self.size)]
@@ -45,6 +46,7 @@ class TimeDivisionKMeans:
         self.tss_list = tss_list
 
     def run(self, early_stop_cnt=3):
+
         households_cluster = pd.DataFrame(columns=self.df.columns)
         cluster_info = list()
 
