@@ -8,8 +8,6 @@ from sklearn.metrics.pairwise import euclidean_distances as euc
 def setting_init_K(K, datas):
     r, c = datas.shape
 
-    K = round(mt.sqrt(r / 2))
-
     clusters_ = np.array([])
     k_setting_datas = datas.copy()
 
@@ -55,14 +53,16 @@ def ecv(self):
 
 
 class TimeDivisionKMeans():
-    def __init__(self, datas):
+    def __init__(self, datas, K=None):
         self.datas = datas
         self.memory = []
         self.ecv_memory = np.array([])
-        pass
+        if K is None:
+            self.K = round(mt.sqrt(len(self.datas) / 2))
+        else:
+            self.K = K
 
     def init_setting(self):
-        self.K = round(mt.sqrt(len(self.datas) / 2))
         self.clusters_ = setting_init_K(self.K, self.datas)
 
         _mean = self.datas.mean(axis=0)
@@ -129,7 +129,7 @@ class TimeDivisionKMeans():
         plt.rcParams['axes.unicode_minus'] = False
 
         _labels = np.unique(self.labels_)
-        r, c = np.arange((round((7 - 1) / col_size) + 1)
+        r, c = np.arange((round((self.K - 1) / col_size) + 1)
                          * col_size).reshape(-1, col_size).shape
         plt.figure(figsize=(16, 5*r))
 
