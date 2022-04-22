@@ -5,14 +5,19 @@ import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import euclidean_distances as euc
 
 
-def setting_init_K(K, datas):
+def setting_init_K(K, datas, mean_init=False):
     r, c = datas.shape
 
     clusters_ = np.array([])
     k_setting_datas = datas.copy()
 
-    data_idxes = np.arange(len(datas))
-    next_K = np.random.choice(data_idxes)
+    if mean_init:
+        mean_pat = np.expand_dims(datas.mean(axis=0), axis=0)
+        next_K = euc(mean_pat, datas).argmin()
+    else:
+        data_idxes = np.arange(len(datas))
+        next_K = np.random.choice(data_idxes)
+        del data_idxes
 
     while True:
         clusters_ = np.append(clusters_, k_setting_datas[next_K])
@@ -27,7 +32,6 @@ def setting_init_K(K, datas):
             next_K = dis_check.argmax()
 
     del next_K
-    del data_idxes
     del k_setting_datas
 
     return clusters_
@@ -62,8 +66,8 @@ class TimeDivisionKMeans():
         else:
             self.K = K
 
-    def init_setting(self):
-        self.clusters_ = setting_init_K(self.K, self.datas)
+    def init_setting(self, mean_init=False):
+        self.clusters_ = setting_init_K(self.K, self.datas, mean_init)
 
         _mean = self.datas.mean(axis=0)
         self.mean = _mean
@@ -102,8 +106,8 @@ class TimeDivisionKMeans():
         del _clusters
         del _datas
 
-    def fit(self, early_stop_cnt=3, memory=True):
-        self.init_setting()
+    def fit(self, early_stop_cnt=3, memory=True, mean_init=False):
+        self.init_setting(mean_init)
         _early_stop_cnt = 0
         while True:
             bak_labels = self.labels_.copy()
