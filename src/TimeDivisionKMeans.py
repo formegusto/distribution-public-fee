@@ -36,6 +36,29 @@ def setting_init_K(K, datas, mean_init=False):
 
     return clusters_
 
+# 정석 kmeans++
+
+
+def setting_init_K_ver_2(K, datas, mean_init=False):
+    r, c = datas.shape
+
+    # 평균에서 가장 가까운 친구
+    if mean_init:
+        mean_pat = np.expand_dims(datas.mean(axis=0), axis=0)
+        min_idx = euc(mean_pat, datas).argmin()
+        clusters_ = np.expand_dims(datas[min_idx], axis=0)
+    else:
+        clusters_ = np.expand_dims(
+            datas[np.random.randint(r)], axis=0)
+
+    for c_id in range(K - 1):
+        dist = euc(datas, clusters_).min(axis=1)
+        next_centroid = datas[np.argmax(dist), :]
+
+        clusters_ = np.append(clusters_, [next_centroid], axis=0)
+
+    return clusters_
+
 
 @property
 def wss(self):
@@ -67,7 +90,8 @@ class TimeDivisionKMeans():
             self.K = K
 
     def init_setting(self, mean_init=False):
-        self.clusters_ = setting_init_K(self.K, self.datas, mean_init)
+        # self.clusters_ = setting_init_K(self.K, self.datas, mean_init)
+        self.clusters_ = setting_init_K_ver_2(self.K, self.datas, mean_init)
 
         _mean = self.datas.mean(axis=0)
         self.mean = _mean
