@@ -170,9 +170,27 @@ class TimeDivisionKMeans():
                 plt.plot(self.datas[self.labels_ == _label].T,
                          c='g', linewidth=0.3)
                 plt.plot(self.clusters_[_label], c='b', linewidth=0.5)
+                plt.yticks(np.arange(0, self.datas.max(), 0.5))
                 ax.set_title("클러스터 {}".format(_label))
 
         plt.show()
+
+    def sorting(self):
+        clusters = self.clusters_.copy()
+        labels = self.labels_.copy()
+
+        clusters_total = clusters.sum(axis=1)
+
+        sort_idxes = clusters_total.argsort()
+        sort_clusters = clusters[sort_idxes].copy()
+
+        sort_labels = np.zeros(len(labels)) - 1
+
+        for label in range(len(clusters)):
+            sort_labels[labels == sort_idxes[label]] = label
+
+        self.clusters_ = sort_clusters
+        self.labels_ = sort_labels
 
 
 TimeDivisionKMeans.wss = wss
