@@ -1,3 +1,4 @@
+import pandas as pd
 from .KMeans import KMeans
 
 
@@ -6,9 +7,10 @@ class TimeDivisionKMeans:
         if (24 % division_size) != 0:
             raise ValueError("only 24 % division_size == 0 !!")
 
-        self.datas = datas.reshape(-1, round(len(datas.T) /
-                                   division_size), division_size)
-        r, c = datas.shape
+        self.df = datas.copy()
+        self.datas = datas.T.values.reshape(-1, round(len(datas) /
+                                                      division_size), division_size)
+        c = len(datas)
         self.division_round = round(c / division_size)
 
     def fit(self):
@@ -24,3 +26,11 @@ class TimeDivisionKMeans:
                     (_round + 1 == self.division_round):
                 print("{}/{} - ECV:{}%".format(_round+1,
                       self.division_round, round(kmeans.ecv * 100)))
+
+        cluster_info = pd.DataFrame(columns=self.df.columns)
+        cluster_info.index = pd.Series(name="division_round")
+
+        for _round, _kmeans in enumerate(self.kmeans_):
+            cluster_info.loc[_round] = _kmeans.labels_.astype("int")
+
+        self.cluster_info = cluster_info.copy()
