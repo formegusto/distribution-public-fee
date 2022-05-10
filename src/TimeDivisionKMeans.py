@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from .KMeans import KMeans
 
 
@@ -34,3 +35,10 @@ class TimeDivisionKMeans:
             cluster_info.loc[_round] = _kmeans.labels_.astype("int")
 
         self.cluster_info = cluster_info.copy()
+
+        groups_ = np.array([])
+
+        for col in cluster_info.columns:
+            max_group = cluster_info.groupby(col).count().values[:, 0].argmax()
+
+            groups_ = np.append(groups_, max_group)
