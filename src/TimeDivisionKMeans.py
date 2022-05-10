@@ -39,6 +39,9 @@ class TimeDivisionKMeans:
         groups_ = np.array([])
 
         for col in cluster_info.columns:
-            max_group = cluster_info.groupby(col).count().values[:, 0].argmax()
+            _groups = cluster_info.groupby(col).count()
+            max_group = _groups.index[_groups.values[:, 0].argmax()]
 
             groups_ = np.append(groups_, max_group)
+
+        self.groups_ = groups_
