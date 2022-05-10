@@ -62,10 +62,11 @@ def setting_init_K_ver_2(K, datas, mean_init=False):
 
 @property
 def wss(self):
-    _uni_labels = np.unique(self.labels_)
+    _uni_labels = np.unique(self.labels_).astype("int")
     wss = 0
 
     for _label in _uni_labels:
+
         _cluster = self.clusters_[_label].reshape(1, -1)
         _data = self.datas[self.labels_ == _label]
 
@@ -130,14 +131,12 @@ class KMeans():
         del _clusters
         del _datas
 
-    def fit(self, early_stop_cnt=3, memory=True, mean_init=False):
+    def fit(self, early_stop_cnt=3, memory=True, mean_init=False, logging=True):
         self.init_setting(mean_init)
         _early_stop_cnt = 0
         while True:
             bak_labels = self.labels_.copy()
-
             self.next()
-
             _labels = self.labels_.copy()
 
             if np.array_equiv(bak_labels, _labels):
@@ -149,7 +148,8 @@ class KMeans():
                         [self.clusters_.copy(), self.labels_.copy()])
                     self.ecv_memory = np.append(
                         self.ecv_memory, self.ecv)
-                print("ECV : {} %".format(round(self.ecv * 100)))
+                if logging:
+                    print("ECV : {} %".format(round(self.ecv * 100)))
                 break
 
     def draw_plot(self, col_size=3):
