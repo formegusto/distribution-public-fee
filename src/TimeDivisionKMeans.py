@@ -36,12 +36,18 @@ class TimeDivisionKMeans:
 
         self.cluster_info = cluster_info.copy()
 
-        groups_ = np.array([])
+        labels_ = np.array([])
+        for col in self.cluster_info.columns:
+            max_group = self.cluster_info[col].value_counts().idxmax()
 
-        for col in cluster_info.columns:
-            _groups = cluster_info.groupby(col).count()
-            max_group = _groups.index[_groups.values[:, 0].argmax()]
+            labels_ = np.append(labels_, max_group)
 
-            groups_ = np.append(groups_, max_group)
+        self.labels_ = labels_.astype("int")
 
-        self.groups_ = groups_
+        _unique_labels = np.unique(labels_)
+        groups_ = np.zeros(len(labels_)) - 1
+
+        for idx, label in enumerate(_unique_labels):
+            groups_[labels_ == label] = idx
+
+        self.groups_ = groups_.astype("int")
