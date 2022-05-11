@@ -36,9 +36,27 @@ class TimeDivisionKMeans:
 
         self.cluster_info = cluster_info.copy()
 
+        # 방법 1
+        # labels_ = np.array([])
+        # for col in self.cluster_info.columns:
+        #     # counts = self.cluster_info[col].value_counts()
+        #     # max_group = ((counts.index + 1) * counts).idxmax()
+        #     max_group = self.cluster_info[col].value_counts().idxmax()
+
+        #     labels_ = np.append(labels_, max_group)
+        # self.labels_ = labels_.astype("int")
+
+        # 방법 2
         labels_ = np.array([])
+
+        sum_datas = self.datas.sum(axis=2).sum(axis=0)
+        sum_total = self.datas.sum(axis=2).sum(axis=0).sum()
+
+        weights = sum_datas / sum_total
+
         for col in self.cluster_info.columns:
-            max_group = self.cluster_info[col].value_counts().idxmax()
+            max_group = round(
+                (self.cluster_info[col] * weights).sum() / weights.sum())
 
             labels_ = np.append(labels_, max_group)
 
