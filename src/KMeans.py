@@ -1,4 +1,5 @@
 import math as mt
+from colorama import init
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
@@ -66,7 +67,6 @@ def wss(self):
     wss = 0
 
     for _label in _uni_labels:
-
         _cluster = self.clusters_[_label].reshape(1, -1)
         _data = self.datas[self.labels_ == _label]
 
@@ -80,19 +80,24 @@ def ecv(self):
     return 1 - (self.wss / self.tss)
 
 
+init_centrois_func = [setting_init_K, setting_init_K_ver_2]
+
+
 class KMeans():
-    def __init__(self, datas, K=None):
+    def __init__(self, datas, ver=2, K=None):
         self.datas = datas
         self.memory = []
         self.ecv_memory = np.array([])
+        self.ver = ver
         if K is None:
             self.K = round(mt.sqrt(len(self.datas) / 2))
         else:
             self.K = K
 
     def init_setting(self, mean_init=False):
-        # self.clusters_ = setting_init_K(self.K, self.datas, mean_init)
-        self.clusters_ = setting_init_K_ver_2(self.K, self.datas, mean_init)
+        init_func = init_centrois_func[self.ver -
+                                       1]
+        self.clusters_ = init_func(self.K, self.datas, mean_init)
 
         _mean = self.datas.mean(axis=0)
         self.mean = _mean
