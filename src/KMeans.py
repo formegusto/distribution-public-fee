@@ -6,6 +6,12 @@ import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import euclidean_distances as euc
 
 
+def setting_ran_K(K, datas, mean_init=False):
+    data_idxes = np.arange(len(datas))
+
+    return datas[np.random.choice(data_idxes, K)]
+
+
 def setting_init_K(K, datas, mean_init=False):
     r, c = datas.shape
 
@@ -80,7 +86,7 @@ def ecv(self):
     return 1 - (self.wss / self.tss)
 
 
-init_centrois_func = [setting_init_K, setting_init_K_ver_2]
+init_centrois_func = [setting_ran_K, setting_init_K, setting_init_K_ver_2]
 
 
 class KMeans():
@@ -177,6 +183,23 @@ class KMeans():
                 plt.plot(self.clusters_[_label], c='b', linewidth=0.5)
                 plt.yticks(np.arange(0, self.datas.max(), 0.5))
                 ax.set_title("클러스터 {}".format(_label))
+
+        plt.show()
+
+    def draw_all_plot(self):
+        matplotlib.rc('font', family='AppleGothic')
+        plt.rcParams['axes.unicode_minus'] = False
+
+        plt.figure(figsize=(16, 4))
+
+        plt.plot(self.datas[0], color='g', linewidth=0.1, label='데이터')
+        plt.plot(self.clusters_[0], color='b', linewidth=0.5, label='클러스터')
+
+        plt.plot(self.datas[1:].T, color='g', linewidth=0.1)
+        plt.plot(self.clusters_[1:].T, color='b', linewidth=0.5)
+
+        plt.title("클러스터 현황")
+        plt.legend()
 
         plt.show()
 
