@@ -182,6 +182,12 @@ class KMeans():
                          c='g', linewidth=0.3)
                 plt.plot(self.clusters_[_label], c='b', linewidth=0.5)
                 plt.yticks(np.arange(0, self.datas.max(), 0.5))
+                ax.text(0.98, 0.925, "{} kWh".format(
+                    round(self.clusters_[_label].sum())),
+                    ha="right",
+                    va="center",
+                    transform=ax.transAxes,
+                    fontsize=16)
                 ax.set_title("클러스터 {}".format(_label))
 
         plt.show()
