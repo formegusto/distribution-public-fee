@@ -28,4 +28,13 @@ def adjust_anomaly_df(datas, anomaly, group_df):
     group_df['label'] = group_df.apply(
         lambda x: _anomaly_update(x, anomaly_cols, new_labels), axis=1)
 
+    _labels = group_df['label'].values
+    new_labels = np.zeros(len(_labels)) - 1
+    uni_labels = np.unique(_labels)
+
+    for idx, _label in enumerate(uni_labels):
+        new_labels[_labels == _label] = idx
+
+    group_df['label'] = new_labels.astype("int")
+
     return group_df

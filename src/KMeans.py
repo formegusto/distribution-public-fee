@@ -119,7 +119,8 @@ class KMeans():
         _uni_labels = np.unique(_labels)
 
         for _label in _uni_labels:
-            _clusters[_label] = _datas[_labels == _label].mean(axis=0)
+            _data = _datas[_labels == _label]
+            _clusters[_label] = _data.mean(axis=0)
 
         self.clusters_ = _clusters
 
