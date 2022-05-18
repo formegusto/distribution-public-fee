@@ -164,7 +164,7 @@ class KMeans():
                     print("ECV : {} %".format(round(self.ecv * 100)))
                 break
 
-    def draw_plot(self, col_size=3):
+    def draw_plot(self, col_size=3, name=None):
         matplotlib.rc('font', family='AppleGothic')
         plt.rcParams['axes.unicode_minus'] = False
 
@@ -189,7 +189,8 @@ class KMeans():
                     va="center",
                     transform=ax.transAxes,
                     fontsize=16)
-                ax.set_title("클러스터 {}".format(_label))
+                ax.set_title("{} {}".format(
+                    "클러스터" if name is None else name, _label))
 
         plt.show()
 
