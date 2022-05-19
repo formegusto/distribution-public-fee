@@ -8,7 +8,7 @@ def make_group_df(datas, kmeans, _type="kmeans"):
 
     group_df = pd.DataFrame(
         np.column_stack(
-            [datas.columns.values, datas.sum(axis=0).round().astype("int")]),
+            [datas.columns.values, datas.sum(axis=0).astype(np.float).round().astype("int")]),
         columns=['가구명', 'usage (kWh)']
     )
     if _type == "kmeans":
