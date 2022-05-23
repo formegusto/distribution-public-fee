@@ -4,6 +4,7 @@ from .set_group import set_group
 from .check_anomaly import check_anomaly
 from .adjust_anomaly import adjust_anomaly
 from .time_grouping import time_grouping
+from .day_grouping import day_grouping
 
 
 class SavingFeedback:
@@ -14,7 +15,7 @@ class SavingFeedback:
             self.select_month(month)
 
     def select_month(self, month):
-        self.datas = self.m_60[self.m_60.index.month == 1].copy()
+        self.datas = self.m_60[self.m_60.index.month == month].copy()
 
     def time_based_grouping(self, time_size):
         time_clusters = list()
@@ -25,6 +26,16 @@ class SavingFeedback:
 
         self.clusters_ = time_clusters
 
+    def day_based_grouping(self):
+        day_clusters = list()
+
+        for c in self.kmeans.clusters_:
+            day_group = self.day_grouping(c)
+            # 0 : cluster pattern, 1: mean cluster pattern
+            day_clusters.append(day_group)
+
+        self.clusters_ = day_clusters
+
 
 SavingFeedback.data_preprocessing = data_preprocessing
 SavingFeedback.kmeans_run = kmeans_run
@@ -32,3 +43,4 @@ SavingFeedback.set_group = set_group
 SavingFeedback.check_anomaly = check_anomaly
 SavingFeedback.adjust_anomaly = adjust_anomaly
 SavingFeedback.time_grouping = time_grouping
+SavingFeedback.day_grouping = day_grouping
