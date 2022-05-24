@@ -11,4 +11,4 @@ def day_grouping(self, target):
         day_group.append(_day_group)
         mean_day_group.append(_day_group.mean(axis=0))
 
-    return day_group, mean_day_group
+    return day_group, np.array(mean_day_group)

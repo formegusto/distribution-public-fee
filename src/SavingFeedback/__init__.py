@@ -5,7 +5,7 @@ from .check_anomaly import check_anomaly
 from .adjust_anomaly import adjust_anomaly
 from .time_grouping import time_grouping
 from .day_grouping import day_grouping
-from ._feedback import _feedback
+from ._feedback import time_feedback, day_feedback
 
 
 class SavingFeedback:
@@ -19,6 +19,7 @@ class SavingFeedback:
         self.datas = self.m_60[self.m_60.index.month == month].copy()
 
     def time_based_grouping(self, time_size):
+        self.mode = "time"
         self.time_size = time_size
 
         time_clusters = list()
@@ -30,6 +31,7 @@ class SavingFeedback:
         self.clusters_ = time_clusters
 
     def day_based_grouping(self):
+        self.mode = "day"
         day_clusters = list()
 
         for c in self.kmeans.clusters_:
@@ -41,9 +43,9 @@ class SavingFeedback:
 
     def feedback(self):
         simulations = list()
-
+        feedback_func = self.time_feedback if self.mode == "time" else self.day_feedback
         for name in self.group['name']:
-            simulations.append(self._feedback(name))
+            simulations.append(feedback_func(name))
 
         self.simulations = simulations
 
@@ -55,4 +57,5 @@ SavingFeedback.check_anomaly = check_anomaly
 SavingFeedback.adjust_anomaly = adjust_anomaly
 SavingFeedback.time_grouping = time_grouping
 SavingFeedback.day_grouping = day_grouping
-SavingFeedback._feedback = _feedback
+SavingFeedback.time_feedback = time_feedback
+SavingFeedback.day_feedback = day_feedback
