@@ -62,7 +62,7 @@ def day_feedback(self, name):
 
     label = target_house['label'].values[0]
     if label == 0:
-        return time_group, mean_time_group
+        return time_group
 
     _now = (self.clusters_[label][1].mean(axis=1) *
             1000).astype(np.float).round() / 1000
@@ -97,6 +97,6 @@ def day_feedback(self, name):
                 neg_mem.append(neg)
     print("모든 사용량이 피드백 되었나요?", sum(neg_mem) <= 0)
     print("실천 최대 기대값 {}kWh \n".format(
-        round(sum([_.sum() for _ in time_group]))))
+        round(sum([_.sum() for _ in sims]))))
 
     return sims
