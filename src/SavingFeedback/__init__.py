@@ -6,6 +6,7 @@ from .adjust_anomaly import adjust_anomaly
 from .time_grouping import time_grouping
 from .day_grouping import day_grouping
 from ._feedback import time_feedback, day_feedback
+from ._result import result
 
 
 class SavingFeedback:
@@ -59,3 +60,4 @@ SavingFeedback.time_grouping = time_grouping
 SavingFeedback.day_grouping = day_grouping
 SavingFeedback.time_feedback = time_feedback
 SavingFeedback.day_feedback = day_feedback
+SavingFeedback.result = result

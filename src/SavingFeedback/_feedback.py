@@ -4,7 +4,7 @@ import numpy as np
 def time_feedback(self, name):
     target_house = self.group[self.group['name'] == name]
     target_pattern = self.datas[name].values
-    print("\n절약 전 사용량", round(target_pattern.sum()))
+    # print("\n절약 전 사용량", round(target_pattern.sum()))
     time_group, mean_time_group = self.time_grouping(
         target_pattern, self.time_size)
 
@@ -48,8 +48,8 @@ def time_feedback(self, name):
             else:
                 neg_mem.append(neg)
 
-    print("모든 사용량이 피드백 되었나요?", sum(neg_mem) <= 0)
-    print("실천 최대 기대값 {}kWh \n".format(round(sims.sum())))
+    # print("모든 사용량이 피드백 되었나요?", sum(neg_mem) <= 0)
+    # print("실천 최대 기대값 {}kWh \n".format(round(sims.sum())))
 
     return sims
 
@@ -57,7 +57,7 @@ def time_feedback(self, name):
 def day_feedback(self, name):
     target_house = self.group[self.group['name'] == name]
     target_pattern = self.datas[name].values
-    print("\n절약 전 사용량 {}kWh".format(round(target_pattern.sum())))
+    # print("\n절약 전 사용량 {}kWh".format(round(target_pattern.sum())))
     time_group, mean_time_group = self.day_grouping(target_pattern)
 
     label = target_house['label'].values[0]
@@ -95,8 +95,8 @@ def day_feedback(self, name):
                 sim[sim > abs(neg)][0] += neg
             else:
                 neg_mem.append(neg)
-    print("모든 사용량이 피드백 되었나요?", sum(neg_mem) <= 0)
-    print("실천 최대 기대값 {}kWh \n".format(
-        round(sum([_.sum() for _ in sims]))))
+    # print("모든 사용량이 피드백 되었나요?", sum(neg_mem) <= 0)
+    # print("실천 최대 기대값 {}kWh \n".format(
+    #     round(sum([_.sum() for _ in sims]))))
 
     return sims
