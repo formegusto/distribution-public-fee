@@ -7,6 +7,7 @@ from .time_grouping import time_grouping
 from .day_grouping import day_grouping
 from ._feedback import time_feedback, day_feedback
 from ._result import result
+from .Drawing import Drawing
 
 
 class SavingFeedback:
@@ -15,6 +16,12 @@ class SavingFeedback:
 
         if month is not None:
             self.select_month(month)
+
+    def draw_init(self, name=None):
+        draw = Drawing(self, name)
+        draw.init_config()
+
+        return draw
 
     def select_month(self, month):
         self.datas = self.m_60[self.m_60.index.month == month].copy()
