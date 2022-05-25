@@ -8,6 +8,7 @@ from .day_grouping import day_grouping
 from ._feedback import time_feedback, day_feedback
 from ._result import result
 from .Drawing import Drawing
+from .spread import spread
 
 import numpy as np
 
@@ -73,8 +74,15 @@ class SavingFeedback:
 
         self.simulations = simulations
 
-    def feedback_pat_recovery(self):
-        pass
+    def recovery(self):
+        recoveries = np.array([])
+        for sim in self.simulations:
+            spread_pat = self.spread(sim)
+            _recovery = spread_pat[self.group_index.argsort()]
+
+            recoveries = np.append(recoveries, _recovery)
+
+        self.recoveries = recoveries.reshape(-1, len(self.datas))
 
 
 SavingFeedback.data_preprocessing = data_preprocessing
@@ -87,3 +95,4 @@ SavingFeedback.day_grouping = day_grouping
 SavingFeedback.time_feedback = time_feedback
 SavingFeedback.day_feedback = day_feedback
 SavingFeedback.result = result
+SavingFeedback.spread = spread
