@@ -21,30 +21,44 @@ def _drawing(self, pat):
 
     for idx, group in enumerate(pat):
         mean_group = group.mean(axis=0)
+        _my_mean = round(mean_group.mean() * 1000) / 1000
         ax = plt.subplot((mt.floor((len(pat) - 1) / 3) + 1), 3, idx+1)
 
         color = 'g'
+        need_saving = None
         if inspect.stack()[1][3] == "house":
             now_mean = (self.now_pattern[idx].mean(
                 axis=0) * 1000).astype("float").round() / 1000
-            if now_mean.mean() < mean_group.mean():
+
+            if now_mean.mean() < _my_mean:
                 color = 'r'
+                need_saving = round((_my_mean - now_mean.mean()) * 1000) / 1000
             else:
                 if self.label != 0:
                     prev_mean = (self.prev_pattern[idx].mean(
                         axis=0) * 1000).astype("float").round() / 1000
-                    if prev_mean.mean() < mean_group.mean():
-                        color = 'orange'
+                    if prev_mean.mean() < _my_mean:
+                        color = 'darkorange'
+                        need_saving = round(
+                            (_my_mean - prev_mean.mean()) * 1000) / 1000
 
-        ax.plot(xticks[idx], group.T, color=color, linewidth=0.25)
+        ax.plot(xticks[idx], group.T, color=color, linewidth=0.3)
         ax.plot(xticks[idx], mean_group, color=color, linewidth=1)
         ax.set_title(titles[idx])
         ax.text(0.95, 0.95,
-                "{} kWh".format(round(mean_group.mean() * 1000) / 1000),
+                "{} kWh".format(_my_mean),
                 fontsize=16,
                 ha="right",
                 va="top",
                 transform=ax.transAxes)
+        if need_saving is not None:
+            ax.text(0.05, 0.05,
+                    "절약 필요 사용량 : {} kWh".format(need_saving),
+                    fontsize=12,
+                    ha="left",
+                    va="bottom",
+                    fontweight="bold",
+                    transform=ax.transAxes)
         plt.xticks(xticks[idx])
         plt.xlabel("시간")
         plt.ylabel("사용량 (kWh)")
