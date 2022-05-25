@@ -9,6 +9,8 @@ from ._feedback import time_feedback, day_feedback
 from ._result import result
 from .Drawing import Drawing
 
+import numpy as np
+
 
 class SavingFeedback:
     def __init__(self, xlsx, month=None):
@@ -31,11 +33,16 @@ class SavingFeedback:
         self.time_size = time_size
 
         time_clusters = list()
+
         for c in self.kmeans.clusters_:
             time_group = self.time_grouping(c, time_size)
             # 0 : cluster pattern, 1: mean cluster pattern
             time_clusters.append(time_group)
 
+        # Recovery Group Index
+        self.group_index = self.time_grouping(
+            self.datas.index.values, time_size, need_mean=False
+        ).flatten()
         self.clusters_ = time_clusters
 
     def day_based_grouping(self):
@@ -47,6 +54,15 @@ class SavingFeedback:
             # 0 : cluster pattern, 1: mean cluster pattern
             day_clusters.append(day_group)
 
+        # Recovery Group Index
+        _group_index = self.day_grouping(
+            self.datas.index.values, need_mean=False)
+
+        # Flatten
+        group_index = np.array([], dtype=np.datetime64)
+        for _idx in _group_index:
+            group_index = np.append(group_index, _idx)
+        self.group_index = group_index
         self.clusters_ = day_clusters
 
     def feedback(self):
@@ -56,6 +72,9 @@ class SavingFeedback:
             simulations.append(feedback_func(name))
 
         self.simulations = simulations
+
+    def feedback_pat_recovery(self):
+        pass
 
 
 SavingFeedback.data_preprocessing = data_preprocessing
