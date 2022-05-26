@@ -12,7 +12,7 @@ def _drawing(self, pat):
                   for start_time in range(0, 24, self.sv.time_size)]
     elif self.sv.mode == "day":
         titles = ['월', '화', '수', '목', '금', '토', '일']
-        xticks = [range(24) for _ in range(7)]
+        xticks = [range(0, 24, 5) for _ in range(7)]
 
     matplotlib.rc('font', family='AppleGothic')
     plt.rcParams['axes.unicode_minus'] = False
