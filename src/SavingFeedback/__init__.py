@@ -14,7 +14,9 @@ import numpy as np
 
 
 class SavingFeedback:
-    def __init__(self, xlsx, month=None):
+    def __init__(self, xlsx, _type="kmeans", _tdtype="weight_mean", month=None):
+        self._type = _type
+        self._tdtype = _tdtype
         self.data_preprocessing(xlsx)
 
         if month is not None:

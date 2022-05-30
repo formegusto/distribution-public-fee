@@ -15,7 +15,7 @@ class TimeDivisionKMeans:
         c = len(datas)
         self.division_round = round(c / division_size)
 
-    def fit(self):
+    def fit(self, _type="weight_mean"):
         self.kmeans_ = list()
 
         for _round in range(self.division_round):
@@ -47,29 +47,31 @@ class TimeDivisionKMeans:
         #     labels_ = np.append(labels_, max_group)
         # self.labels_ = labels_.astype("int")
 
-        # 방법 2
-        labels_ = np.array([])
+        # 방법 1. mean
+        if _type == "mean":
+            labels_ = self.cluster_info.mean().round().astype("int").values
+        elif _type == "weight_mean":
+            # 방법 2. weight_mean
+            labels_ = np.array([])
 
-        sum_datas = self.datas.sum(axis=2).sum(axis=0)
-        sum_total = self.datas.sum(axis=2).sum(axis=0).sum()
+            sum_datas = self.datas.sum(axis=2).sum(axis=0)
+            sum_total = self.datas.sum(axis=2).sum(axis=0).sum()
 
-        weights = sum_datas / sum_total
+            weights = sum_datas / sum_total
 
-        for col in self.cluster_info.columns:
-            max_group = round(
-                (self.cluster_info[col] * weights).sum() / weights.sum())
+            for col in self.cluster_info.columns:
+                max_group = round(
+                    (self.cluster_info[col] * weights).sum() / weights.sum())
 
-            labels_ = np.append(labels_, max_group)
+                labels_ = np.append(labels_, max_group)
 
-        self.labels_ = labels_.astype("int")
+        labels_ = labels_.astype("int")
+        uni_labels = np.unique(labels_)
+        self.labels_ = np.zeros(len(labels_)) - 1
+        for idx, _label in enumerate(uni_labels):
+            self.labels_[labels_ == _label] = idx
 
-        _unique_labels = np.unique(labels_)
-        groups_ = np.zeros(len(labels_)) - 1
-
-        for idx, label in enumerate(_unique_labels):
-            groups_[labels_ == label] = idx
-
-        self.groups_ = groups_.astype("int")
+        self.labels_ = self.labels_.astype("int")
 
 
 TimeDivisionKMeans.draw_division_plot = draw_division_plot
