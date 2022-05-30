@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-from .KMeans import KMeans
+from ..KMeans import KMeans
+from .draw_division_plot import draw_division_plot
 
 
 class TimeDivisionKMeans:
@@ -69,3 +70,6 @@ class TimeDivisionKMeans:
             groups_[labels_ == label] = idx
 
         self.groups_ = groups_.astype("int")
+
+
+TimeDivisionKMeans.draw_division_plot = draw_division_plot
