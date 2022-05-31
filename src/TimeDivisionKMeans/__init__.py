@@ -73,5 +73,30 @@ class TimeDivisionKMeans:
 
         self.labels_ = self.labels_.astype("int")
 
+        clusters_ = np.array([])
+        _pats = self.df.to_numpy().T
+
+        for label in np.unique(self.labels_):
+            mean_pat = _pats[self.labels_ == label].mean(axis=0)
+            clusters_ = np.append(clusters_, mean_pat)
+            clusters_ = clusters_.reshape(-1, mean_pat.size)
+
+        self.clusters_ = clusters_
+
+        kmeans_ = KMeans(datas=self.df.T.values, K=len(clusters_))
+        kmeans_.labels_ = labels_.astype("int")
+        kmeans_.clusters_ = clusters_
+
+        self.kmeans = kmeans_
+
+    def draw_plot(self):
+        self.kmeans.draw_plot()
+
+    def next_setting(self):
+        self.kmeans.next_setting()
+
+        self.lables_ = self.kmeans.labels_
+        self.clusters_ = self.kmeans.clusters_
+
 
 TimeDivisionKMeans.draw_division_plot = draw_division_plot
