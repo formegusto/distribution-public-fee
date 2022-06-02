@@ -1,4 +1,5 @@
 import math as mt
+from attr import has
 from colorama import init
 import numpy as np
 import matplotlib
@@ -75,7 +76,6 @@ def wss(self):
     for _label in _uni_labels:
         _cluster = self.clusters_[_label].reshape(1, -1)
         _data = self.datas[self.labels_ == _label]
-
         wss += (euc(_cluster, _data)[0] ** 2).sum()
 
     return wss
@@ -83,6 +83,11 @@ def wss(self):
 
 @property
 def ecv(self):
+    if ~hasattr(self, "tss"):
+        _mean = self.datas.mean(axis=0)
+        self.mean = _mean
+        _mean = _mean.reshape(-1, len(_mean))
+        self.tss = (euc(_mean, self.datas) ** 2).sum()
     return 1 - (self.wss / self.tss)
 
 
