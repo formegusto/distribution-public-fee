@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from ..KMeans import KMeans
 from .draw_division_plot import draw_division_plot
+from .draw_cont_plot import draw_cont_plot
 
 
 class TimeDivisionKMeans:
@@ -12,6 +13,7 @@ class TimeDivisionKMeans:
         self.df = datas.copy()
         self.datas = datas.T.values.reshape(-1, round(len(datas) /
                                                       division_size), division_size)
+        self.idx = datas.index[::division_size]
         c = len(datas)
         self.division_round = round(c / division_size)
 
@@ -36,6 +38,7 @@ class TimeDivisionKMeans:
             cluster_info.loc[_round] = _kmeans.labels_.astype("int")
 
         self.cluster_info = cluster_info.copy()
+        self.cont_table_ = cluster_info.copy().to_numpy().T
 
         # 방법 1
         # labels_ = np.array([])
@@ -113,4 +116,5 @@ class TimeDivisionKMeans:
         self.clusters_ = self.kmeans.clusters_
 
 
+TimeDivisionKMeans.draw_cont_plot = draw_cont_plot
 TimeDivisionKMeans.draw_division_plot = draw_division_plot
