@@ -89,6 +89,20 @@ class TimeDivisionKMeans:
 
         self.kmeans = kmeans_
 
+        self.set_cluster_cont_table()
+
+    def set_cluster_cont_table(self):
+        unique_labels = np.unique(self.labels_)
+        cluster_cont_table = np.array([])
+
+        for label in unique_labels:
+            cols = self.cluster_info.columns[self.labels_ == label]
+            cluster_cont_table = np.append(cluster_cont_table,
+                                           self.cluster_info[cols].mean(axis=1).round().astype("int").values)
+
+        self.cluster_cont_table_ = cluster_cont_table.reshape(
+            -1, self.division_round)
+
     def draw_plot(self):
         self.kmeans.draw_plot()
 
