@@ -3,6 +3,7 @@ import numpy as np
 from ..KMeans import KMeans
 from .draw_division_plot import draw_division_plot
 from .draw_cont_plot import draw_cont_plot
+from .set_time_cont_table import set_time_cont_table
 
 
 class TimeDivisionKMeans:
@@ -14,6 +15,7 @@ class TimeDivisionKMeans:
         self.datas = datas.T.values.reshape(-1, round(len(datas) /
                                                       division_size), division_size)
         self.idx = datas.index[::division_size]
+        self.division_size = division_size
         c = len(datas)
         self.division_round = round(c / division_size)
 
@@ -116,5 +118,6 @@ class TimeDivisionKMeans:
         self.clusters_ = self.kmeans.clusters_
 
 
+TimeDivisionKMeans.set_time_cont_table = set_time_cont_table
 TimeDivisionKMeans.draw_cont_plot = draw_cont_plot
 TimeDivisionKMeans.draw_division_plot = draw_division_plot
