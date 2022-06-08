@@ -90,10 +90,21 @@ def day_feedback(self, name):
     _target = (mean_time_group.mean(axis=1) *
                1000).astype(np.float).round() / 1000
 
-    now_saving_point = np.where(_target > _now)[0]
-    prev_saving_point = np.where(_target > _prev)[0]
-    prev_saving_point = prev_saving_point[~np.isin(
-        prev_saving_point, now_saving_point)]
+    if self._type == "tdkmeans":
+        _now_cont = self.kmeans.target_cluster_cont_[label]
+        _prev_cont = self.kmeans.target_cluster_cont_[label - 1]
+        _target_cont = self.kmeans.target_cont_[
+            self.datas.columns == name
+        ][0]
+        now_saving_point = np.where(_target_cont > _now_cont + 1)[0]
+        prev_saving_point = np.where(_target_cont > _prev_cont + 1)[0]
+        prev_saving_point = prev_saving_point[~np.isin(
+            prev_saving_point, now_saving_point)]
+    else:
+        now_saving_point = np.where(_target > _now)[0]
+        prev_saving_point = np.where(_target > _prev)[0]
+        prev_saving_point = prev_saving_point[~np.isin(
+            prev_saving_point, now_saving_point)]
 
     err = np.zeros(len(time_group))
     err[now_saving_point] = _target[now_saving_point] - _now[now_saving_point]
