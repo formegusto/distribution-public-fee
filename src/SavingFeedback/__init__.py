@@ -5,7 +5,7 @@ from .check_anomaly import check_anomaly
 from .adjust_anomaly import adjust_anomaly
 from .time_grouping import time_grouping
 from .day_grouping import day_grouping
-from ._feedback import time_feedback, day_feedback
+from ._feedback import _feedback
 from ._result import result
 from .Drawing import Drawing
 from .spread import spread
@@ -70,9 +70,8 @@ class SavingFeedback:
 
     def feedback(self):
         simulations = list()
-        feedback_func = self.time_feedback if self.mode == "time" else self.day_feedback
         for name in self.group['name']:
-            simulations.append(feedback_func(name))
+            simulations.append(_feedback(self, name))
 
         self.simulations = simulations
 
@@ -94,7 +93,5 @@ SavingFeedback.check_anomaly = check_anomaly
 SavingFeedback.adjust_anomaly = adjust_anomaly
 SavingFeedback.time_grouping = time_grouping
 SavingFeedback.day_grouping = day_grouping
-SavingFeedback.time_feedback = time_feedback
-SavingFeedback.day_feedback = day_feedback
 SavingFeedback.result = result
 SavingFeedback.spread = spread
