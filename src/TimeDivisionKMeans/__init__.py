@@ -64,6 +64,7 @@ class TimeDivisionKMeans:
             sum_total = self.datas.sum(axis=2).sum(axis=0).sum()
 
             weights = sum_datas / sum_total
+            self.weights_ = weights
 
             for col in self.cluster_info.columns:
                 max_group = round(

@@ -30,6 +30,8 @@ def _feedback(self, name):
         _target_cont = self.kmeans.target_cont_[
             self.datas.columns == name
         ][0]
+        # now_saving_point = np.where(_target_cont > _now_cont)[0]
+        # prev_saving_point = np.where(_target_cont > _prev_cont)[0]
         now_saving_point = np.where(_target_cont > _now_cont + 1)[0]
         prev_saving_point = np.where(_target_cont > _prev_cont + 1)[0]
         prev_saving_point = prev_saving_point[~np.isin(
@@ -46,8 +48,11 @@ def _feedback(self, name):
     err[prev_saving_point] = _target[prev_saving_point] - _prev[prev_saving_point]
 
     if np.any(err < 0):
-        print(_target[now_saving_point], _now[now_saving_point])
-        print(_target[prev_saving_point], _prev[prev_saving_point])
+        print(now_saving_point,
+              _target[now_saving_point], _now[now_saving_point])
+        print(_target[now_saving_point] - _now[now_saving_point])
+        print(prev_saving_point,
+              _target[prev_saving_point], _prev[prev_saving_point])
 
         print(_now_cont, _prev_cont, _target_cont)
         print(name, err)
