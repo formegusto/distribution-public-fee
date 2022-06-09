@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import euclidean_distances as euc
+from sklearn.tree import DecisionTreeClassifier as DTC
 
 
 def setting_ran_K(K, datas, mean_init=False):
@@ -232,6 +233,57 @@ class KMeans():
 
         self.clusters_ = sort_clusters
         self.labels_ = sort_labels
+
+    # KMeans 용 adjust anomaly
+    def check_anomaly(self):
+        datas = self.datas
+        datas = datas.sum(axis=1)
+        labels = self.labels_
+
+        min_label = labels.min()
+        max_label = labels.max()
+
+        anomalies = []
+
+        for idx, data in enumerate(datas):
+            label = labels[idx]
+            if (label == min_label) | (label == max_label):
+                continue
+
+            if data > datas[labels == (label + 1)].min():
+                anomalies.append(idx)
+
+        self.anomalies_ = np.array(anomalies)
+
+    def adjust_anomaly(self):
+        while True:
+            self.check_anomaly()
+            if self.anomalies_.size == 0:
+                break
+            datas = self.datas
+            datas = datas.sum(axis=1)
+            labels = self.labels_
+
+            idxes = np.arange(datas.size)
+
+            cond = ~np.isin(idxes, self.anomalies_)
+            X = datas[cond].reshape(-1, 1)
+            y = labels[cond]
+
+            dtc = DTC()
+            dtc.fit(X, y)
+
+            predict_labels = dtc.predict(datas.reshape(-1, 1))
+            new_labels = np.zeros(labels.size) - 1
+            classes = np.unique(predict_labels)
+            for idx, label in enumerate(classes):
+                new_labels[predict_labels == label] = idx
+
+            self.K = classes.size
+            self.clusters_ = self.clusters_[:self.K]
+            self.labels_ = new_labels.astype("int")
+
+            self.next_setting()
 
 
 KMeans.wss = wss

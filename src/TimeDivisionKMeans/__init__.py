@@ -27,6 +27,7 @@ class TimeDivisionKMeans:
             kmeans = KMeans(datas=self.datas[:, _round])
             kmeans.fit(logging=False)
             kmeans.sorting()
+            kmeans.adjust_anomaly()
 
             self.kmeans_.append(kmeans)
             if (_round % 10 == 0) or \

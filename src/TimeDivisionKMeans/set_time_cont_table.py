@@ -18,7 +18,7 @@ def set_time_cont_table(self):
     self.target_cont_ = _time_cont_table(
         self.cont_table_, self.division_size, len(self.df.columns))
     self.target_cluster_cont_ = _time_cont_table(
-        self.cluster_cont_table_, self.division_size, self.K)
+        self.cluster_cont_table_, self.division_size, self.kmeans.K)
     # self.target_cont_ = _weight_time_cont_table(
     #     self.cont_table_, self.division_size, len(self.df.columns), self.weights_)
     # self.target_cluster_cont_ = _weight_time_cont_table(

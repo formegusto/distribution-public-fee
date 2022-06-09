@@ -38,7 +38,7 @@ def set_day_cont_table(self):
     self.target_cont_ = _day_cont_table(
         self.cont_table_, self.idx, self.df.columns.size)
     self.target_cluster_cont_ = _day_cont_table(
-        self.cluster_cont_table_, self.idx, self.K)
+        self.cluster_cont_table_, self.idx, self.kmeans.K)
     # self.target_cont_ = _weight_day_cont_table(
     #     self.cont_table_, self.idx, self.df.columns.size, self.weights_)
     # self.target_cluster_cont_ = _weight_day_cont_table(
