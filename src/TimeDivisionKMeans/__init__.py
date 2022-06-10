@@ -109,7 +109,7 @@ class TimeDivisionKMeans:
 
         self.set_cluster_cont_table()
 
-    def auth_fit(self, _type="weight_mean"):
+    def auto_fit(self, _type="weight_mean"):
         self.kmeans_run()
         self.adjust_anomaly()
         self.fit(_type)
