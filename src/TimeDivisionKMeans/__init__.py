@@ -20,14 +20,13 @@ class TimeDivisionKMeans:
         c = len(datas)
         self.division_round = round(c / division_size)
 
-    def fit(self, _type="weight_mean"):
+    def kmeans_run(self):
         self.kmeans_ = list()
 
         for _round in range(self.division_round):
             kmeans = KMeans(datas=self.datas[:, _round])
             kmeans.fit(logging=False)
             kmeans.sorting()
-            kmeans.adjust_anomaly()
 
             self.kmeans_.append(kmeans)
             if (_round % 10 == 0) or \
@@ -35,6 +34,17 @@ class TimeDivisionKMeans:
                 print("{}/{} - ECV:{}%".format(_round+1,
                       self.division_round, round(kmeans.ecv * 100)))
 
+    def adjust_anomaly(self):
+        print("[tdkmeans] adjust anomaly :)")
+        for _round in range(self.division_round):
+            kmeans = self.kmeans_[_round]
+            kmeans.adjust_anomaly()
+            if (_round % 10 == 0) or \
+                    (_round + 1 == self.division_round):
+                print("{}/{} - ECV:{}%".format(_round+1,
+                      self.division_round, round(kmeans.ecv * 100)))
+
+    def fit(self, _type="weight_mean"):
         cluster_info = pd.DataFrame(columns=self.df.columns)
         cluster_info.index = pd.Series(name="division_round")
 

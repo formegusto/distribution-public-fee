@@ -69,6 +69,26 @@ def setting_init_K_ver_2(K, datas, mean_init=False):
     return clusters_
 
 
+def hist(self):
+    plt.figure(figsize=(16, 4))
+
+    matplotlib.rc('font', family='AppleGothic')
+    plt.rcParams['axes.unicode_minus'] = False
+
+    sums = self.datas.sum(axis=1)
+    uni_labels = np.unique(self.labels_).astype("int")
+
+    colors = plt.cm.get_cmap("YlGn", uni_labels.size)
+    for label in uni_labels:
+        plt.hist(sums[self.labels_ == label],
+                 label="클러스터 {}".format(label), color=colors(label))
+
+    plt.legend(loc='upper right')
+    plt.xlabel("Usage (kWh)")
+    plt.ylabel("Number of samples")
+    plt.show()
+
+
 @property
 def wss(self):
     _uni_labels = np.unique(self.labels_).astype("int")
@@ -285,6 +305,6 @@ class KMeans():
 
             self.next_setting()
 
-
+KMeans.hist = hist
 KMeans.wss = wss
 KMeans.ecv = ecv
