@@ -109,6 +109,11 @@ class TimeDivisionKMeans:
 
         self.set_cluster_cont_table()
 
+    def auth_fit(self, _type="weight_mean"):
+        self.kmeans_run()
+        self.adjust_anomaly()
+        self.fit(_type)
+
     def set_cluster_cont_table(self):
         unique_labels = np.unique(self.labels_)
         cluster_cont_table = np.array([])

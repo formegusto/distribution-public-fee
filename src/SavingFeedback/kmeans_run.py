@@ -10,7 +10,7 @@ def kmeans_run(self):
         kmeans.fit()
     elif self._type == "tdkmeans":
         kmeans = TimeDivisionKMeans(datas=self.datas)
-        kmeans.fit(_type=self._tdtype)
+        kmeans.auto_fit(_type=self._tdtype)
 
     if self._type == "kmeans":
         kmeans.sorting()
