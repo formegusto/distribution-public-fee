@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def _feedback(self, name):
+def feedback(self, name, td_limit=1):
     target_house = self.group[self.group['name'] == name]
     target_pattern = self.datas[name].values
     # print("\n절약 전 사용량 {}kWh".format(round(target_pattern.sum())))
@@ -32,8 +32,8 @@ def _feedback(self, name):
         ][0]
         # now_saving_point = np.where(_target_cont > _now_cont)[0]
         # prev_saving_point = np.where(_target_cont > _prev_cont)[0]
-        now_saving_point = np.where(_target_cont > _now_cont + 1)[0]
-        prev_saving_point = np.where(_target_cont > _prev_cont + 1)[0]
+        now_saving_point = np.where(_target_cont > _now_cont + td_limit)[0]
+        prev_saving_point = np.where(_target_cont > _prev_cont + td_limit)[0]
         prev_saving_point = prev_saving_point[~np.isin(
             prev_saving_point, now_saving_point)]
 
