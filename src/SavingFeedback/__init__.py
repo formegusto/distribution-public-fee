@@ -68,10 +68,10 @@ class SavingFeedback:
         self.group_index = group_index
         self.clusters_ = day_clusters
 
-    def feedback(self):
+    def feedback(self, td_limit=1):
         simulations = list()
         for name in self.group['name']:
-            simulations.append(feedback(self, name))
+            simulations.append(feedback(self, name, td_limit))
 
         self.simulations = simulations
 
