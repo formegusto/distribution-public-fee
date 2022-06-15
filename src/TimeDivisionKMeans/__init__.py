@@ -5,6 +5,7 @@ from .draw_division_plot import draw_division_plot
 from .draw_cont_plot import draw_cont_plot
 from .set_time_cont_table import set_time_cont_table
 from .set_day_cont_table import set_day_cont_table
+from .hist import hist
 
 
 class TimeDivisionKMeans:
@@ -140,3 +141,4 @@ TimeDivisionKMeans.set_time_cont_table = set_time_cont_table
 TimeDivisionKMeans.set_day_cont_table = set_day_cont_table
 TimeDivisionKMeans.draw_cont_plot = draw_cont_plot
 TimeDivisionKMeans.draw_division_plot = draw_division_plot
+TimeDivisionKMeans.hist = hist
