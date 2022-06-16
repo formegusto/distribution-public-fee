@@ -69,10 +69,14 @@ class SavingFeedback:
         self.clusters_ = day_clusters
 
     def feedback(self, td_limit=1):
+        markers = list()
         simulations = list()
         for name in self.group['name']:
-            simulations.append(feedback(self, name, td_limit))
+            sims, mark = feedback(self, name, td_limit)
+            markers.append(mark)
+            simulations.append(sims)
 
+        self.markers = markers
         self.simulations = simulations
 
     def recovery(self):

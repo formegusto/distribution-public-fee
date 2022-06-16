@@ -20,6 +20,7 @@ def _drawing(self, pat):
     plt.figure(figsize=(20, (mt.floor((len(pat) - 1) / 3) + 1) * 6))
 
     for idx, group in enumerate(pat):
+        _marker = self.marker[idx]
         mean_group = group.mean(axis=0)
         _my_mean = round(mean_group.mean() * 1000) / 1000
         ax = plt.subplot((mt.floor((len(pat) - 1) / 3) + 1), 3, idx+1)
@@ -30,17 +31,18 @@ def _drawing(self, pat):
             now_mean = (self.now_pattern[idx].mean(
                 axis=0) * 1000).astype("float").round() / 1000
 
-            if now_mean.mean() < _my_mean:
-                color = 'r'
-                need_saving = round((_my_mean - now_mean.mean()) * 1000) / 1000
-            else:
-                if self.label != 0:
+            if _marker != 0:
+                if _marker == 1:
+                    color = 'r'
+                    need_saving = round(
+                        (_my_mean - now_mean.mean()) * 1000) / 1000
+                else:
+
                     prev_mean = (self.prev_pattern[idx].mean(
                         axis=0) * 1000).astype("float").round() / 1000
-                    if prev_mean.mean() < _my_mean:
-                        color = 'darkorange'
-                        need_saving = round(
-                            (_my_mean - prev_mean.mean()) * 1000) / 1000
+                    color = 'darkorange'
+                    need_saving = round(
+                        (_my_mean - prev_mean.mean()) * 1000) / 1000
 
         ax.plot(xticks[idx], group.T, color=color, linewidth=0.3)
         ax.plot(xticks[idx], mean_group, color=color, linewidth=1)
@@ -83,9 +85,14 @@ class Drawing:
             target_house = self.sv.group[self.sv.group['name'] == self.name].copy(
             )
         self.target_house = target_house
+
         self.name = target_house['name'].values[0]
+
         self.label = target_house['label'].values[0]
         target_pattern = self.sv.datas[self.name].values
+        self.marker = self.sv.markers[
+            self.sv.group[self.sv.group['name'] == self.name].index[0]
+        ]
 
         mode = self.sv.mode
         if mode == "time":

@@ -13,9 +13,10 @@ def feedback(self, name, td_limit=1):
     time_group, mean_time_group = self.time_grouping(
         target_pattern, self.time_size) if self.mode == "time" else self.day_grouping(target_pattern)
 
+    feedback_marker = np.zeros(round(24 / self.time_size))
     label = target_house['label'].values[0]
     if label == 0:
-        return time_group
+        return time_group, feedback_marker
 
     _now = (self.clusters_[label][1].mean(axis=1) *
             1000).astype(np.float).round() / 1000
@@ -33,6 +34,7 @@ def feedback(self, name, td_limit=1):
         # now_saving_point = np.where(_target_cont > _now_cont)[0]
         # prev_saving_point = np.where(_target_cont > _prev_cont)[0]
         now_saving_point = np.where(_target_cont > _now_cont + td_limit)[0]
+
         prev_saving_point = np.where(_target_cont > _prev_cont + td_limit)[0]
         prev_saving_point = prev_saving_point[~np.isin(
             prev_saving_point, now_saving_point)]
@@ -42,6 +44,11 @@ def feedback(self, name, td_limit=1):
         prev_saving_point = np.where(_target > _prev)[0]
         prev_saving_point = prev_saving_point[~np.isin(
             prev_saving_point, now_saving_point)]
+
+    if now_saving_point.size != 0:
+        feedback_marker[now_saving_point] = 1
+    if prev_saving_point.size != 0:
+        feedback_marker[prev_saving_point] = 2
 
     err = np.zeros(len(time_group))
     err[now_saving_point] = _target[now_saving_point] - _now[now_saving_point]
@@ -80,4 +87,4 @@ def feedback(self, name, td_limit=1):
     # print("모든 사용량이 피드백 되었나요?", sum(neg_mem) <= 0)
     # print("실천 최대 기대값 {}kWh \n".format(round(sims.sum())))
 
-    return sims
+    return sims, feedback_marker
