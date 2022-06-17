@@ -8,12 +8,13 @@ def feedback(self, name, td_limit=1):
     if self._type == "tdkmeans":
         if self.mode == "time":
             self.kmeans.set_time_cont_table()
+            feedback_marker = np.zeros(round(24 / self.time_size))
         else:
             self.kmeans.set_day_cont_table()
+            feedback_marker = np.zeros(7)
     time_group, mean_time_group = self.time_grouping(
         target_pattern, self.time_size) if self.mode == "time" else self.day_grouping(target_pattern)
 
-    feedback_marker = np.zeros(round(24 / self.time_size))
     label = target_house['label'].values[0]
     if label == 0:
         return time_group, feedback_marker

@@ -126,6 +126,7 @@ class TimeDivisionKMeans:
 
         self.cluster_cont_table_ = cluster_cont_table.reshape(
             -1, self.division_round)
+        self.K = len(cluster_cont_table)
 
     def draw_plot(self):
         self.kmeans.draw_plot()

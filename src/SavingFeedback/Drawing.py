@@ -44,8 +44,8 @@ def _drawing(self, pat):
                     need_saving = round(
                         (_my_mean - prev_mean.mean()) * 1000) / 1000
 
-        ax.plot(xticks[idx], group.T, color=color, linewidth=0.3)
-        ax.plot(xticks[idx], mean_group, color=color, linewidth=1)
+        ax.plot(group.T, color=color, linewidth=0.3)
+        ax.plot(mean_group, color=color, linewidth=1)
         ax.set_title(titles[idx])
         ax.text(0.95, 0.95,
                 "{} kWh".format(_my_mean),
