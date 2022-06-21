@@ -5,13 +5,15 @@ def feedback(self, name, td_limit=1):
     target_house = self.group[self.group['name'] == name]
     target_pattern = self.datas[name].values
     # print("\n절약 전 사용량 {}kWh".format(round(target_pattern.sum())))
-    if self._type == "tdkmeans":
-        if self.mode == "time":
+    # if self._type == "tdkmeans":
+    if self.mode == "time":
+        if self._type == "tdkmeans":
             self.kmeans.set_time_cont_table()
-            feedback_marker = np.zeros(round(24 / self.time_size))
-        else:
+        feedback_marker = np.zeros(round(24 / self.time_size))
+    else:
+        if self._type == "tdkmeans":
             self.kmeans.set_day_cont_table()
-            feedback_marker = np.zeros(7)
+        feedback_marker = np.zeros(7)
     time_group, mean_time_group = self.time_grouping(
         target_pattern, self.time_size) if self.mode == "time" else self.day_grouping(target_pattern)
 
