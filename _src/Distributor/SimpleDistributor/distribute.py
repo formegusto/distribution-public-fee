@@ -3,15 +3,11 @@ import pandas as pd
 
 
 def distribute(self, only_value=True, private=False):
-    if private:
-        basic = round(self.predictor_.basic / self.cont_.size)
-        elec_rate = round(self.predictor_.elec_rate / self.cont_.size)
-    else:
-        basic = self.predictor_.basic
-        elec_rate = self.predictor_.elec_rate
+    basic = self.predictor_.basic
+    elec_rate = self.predictor_.elec_rate
 
-    basics = (basic * self.cont_).astype(np.float).round()
-    elec_rates = (elec_rate *
+    basics = np.zeros(self.cont_.size) if basic <= 0 else (basic * self.cont_).astype(np.float).round()
+    elec_rates = np.zeros(self.cont_.size) if elec_rate <= 0 else (elec_rate *
                   self.cont_).astype(np.float).round()
 
     rest = self.calc.public_won - basics.sum() - elec_rates.sum()

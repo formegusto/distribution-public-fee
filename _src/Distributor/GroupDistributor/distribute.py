@@ -11,8 +11,10 @@ def distribute(self, only_value=True, private=False):
     pri_basics = (basic * counts * cont / counts).round()
     pri_elec_rates = (elec_rate * counts * cont / counts).round()
 
-    basics = np.array([pri_basics[_] for _ in self.groups_])
-    elec_rates = np.array([pri_elec_rates[_] for _ in self.groups_])
+    basics = np.zeros(self.cont_.size) if basic <= 0 else np.array(
+        [pri_basics[_] for _ in self.groups_])
+    elec_rates = np.zeros(self.cont_.size) if elec_rate <= 0 else np.array(
+        [pri_elec_rates[_] for _ in self.groups_])
 
     rest = self.calc.public_won - basics.sum() - elec_rates.sum()
     rest_private = (rest / self.cont_.size)
