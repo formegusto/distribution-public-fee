@@ -26,7 +26,6 @@ def set_cont(self):
     new_groups = np.zeros(usages.size)
     for new_idx, idx in enumerate(uni_groups):
         new_groups[groups == idx] = new_idx
-
-    group_cont = (hist / hist.sum(axis=0))[:, -1]
-    cont_ = np.array([group_cont[int(_)] for _ in new_groups])
-    self.cont_ = cont_ / cont_.sum()
+    group_cont = (hist[:, -1] / hist[:, -1].sum())
+    self.groups_ = new_groups.astype("int")
+    self.cont_ = np.array([group_cont[_] for _ in self.groups_])

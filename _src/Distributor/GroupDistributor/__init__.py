@@ -1,5 +1,6 @@
 from ..common import set_init, select_month, set_calc
 from .set_cont import set_cont
+from .distribute import distribute, distribute_table
 from ...PublicAnalysis.BillTable import BillTable
 
 
@@ -16,3 +17,5 @@ GroupDistributor.set_init = set_init
 GroupDistributor.select_month = select_month
 GroupDistributor.set_calc = set_calc
 GroupDistributor.set_cont = set_cont
+GroupDistributor.distribute = distribute
+GroupDistributor.distribute_table = distribute_table
