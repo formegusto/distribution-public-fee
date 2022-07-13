@@ -26,3 +26,8 @@ STEP_LIMITS_HOUSEHOLD = dict({
     "기타": np.array([200, 200]),
     "여름": np.array([300, 150])
 })
+
+STEP = dict({
+    "기타": np.array([0, 200, 400]),
+    "여름": np.array([0, 300, 450])
+})
