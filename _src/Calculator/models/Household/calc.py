@@ -5,7 +5,10 @@ from ...common.rate import ENV, FUEL
 @property
 def basic(self):
     _basics = self.BASIC[self.steps != 0]
-    return _basics.max()
+    if _basics.size == 0:
+        return self.BASIC[0]
+    else:
+        return _basics.max()
 
 
 @property
@@ -23,10 +26,14 @@ def fuel(self):
     return np.floor(self.kwh * FUEL)
 
 
+# min_bill = 1000
+min_bill = 0
+
+
 @property
 def elec_bill(self):
     _elec_bill = self.basic + self.elec_rate + self.env + self.fuel - self.guarantee
-    if _elec_bill < 1000:
+    if _elec_bill < min_bill:
         return 1000
     else:
         return _elec_bill

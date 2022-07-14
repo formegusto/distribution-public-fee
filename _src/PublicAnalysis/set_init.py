@@ -23,6 +23,7 @@ def set_init(self):
         x[1], x[2], x[3], x[4], x[5]), axis=1).to_numpy()
 
     usages = xlsx.iloc[3:, 7:].to_numpy()
+    usages = np.where(usages == "-", 0, usages)
 
     # 15분 meter pattern
     self.meter_15 = pd.DataFrame(

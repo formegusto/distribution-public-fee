@@ -1,4 +1,5 @@
 import numpy as np
+from ..Calculator.common.rate import ENV, FUEL
 
 
 @property
@@ -35,13 +36,14 @@ def min_won(self):
 @property
 def env(self):
     return (self.calc.apt_obj.env * self.calc.household_count) \
-        - sum([5.3 * _.kwh if _.kwh > self.min_kwh else 0 for _ in self.calc.households])
+        - sum([ENV * _.kwh if _.kwh > self.min_kwh else 0 for _ in self.calc.households])
 
 
 @property
 def fuel(self):
     return (self.calc.apt_obj.fuel * self.calc.household_count) \
-        - sum([-3 * _.kwh if _.kwh > self.min_kwh else 0 for _ in self.calc.households])
+        - sum([FUEL * _.kwh if _.kwh >
+              self.min_kwh else 0 for _ in self.calc.households])
 
 
 @property
