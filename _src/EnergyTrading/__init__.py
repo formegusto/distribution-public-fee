@@ -3,6 +3,7 @@ from .simulate import simulate
 from .set_init import set_init
 from .buyer_selection_by_list_idx import buyer_selection_by_list_idx
 from .get_operation import get_buyer_profit, get_result
+from .set_settlement_infos import set_settlement_infos
 
 
 class EnergyTrading:
@@ -19,3 +20,4 @@ EnergyTrading.simulate = simulate
 EnergyTrading.buyer_selection_by_list_idx = buyer_selection_by_list_idx
 EnergyTrading.get_buyer_profit = get_buyer_profit
 EnergyTrading.get_result = get_result
+EnergyTrading.set_settlement_infos = set_settlement_infos
