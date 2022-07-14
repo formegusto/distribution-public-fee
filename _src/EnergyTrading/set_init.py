@@ -1,5 +1,5 @@
 import numpy as np
-from ..Calculator.common import STEP_LIMITS_HOUSEHOLD, STEP, ELEC, get_season_kr
+from .common import STEP_LIMITS_HOUSEHOLD, STEP, ELEC, get_season_kr
 
 
 def set_init(self):
